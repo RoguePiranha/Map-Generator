@@ -1,5 +1,5 @@
 import heapq
-
+from utils import get_neighbors
 
 # Define movement costs for different terrains
 TERRAIN_COSTS = {
@@ -51,12 +51,4 @@ def a_star(start, goal, terrain):
 
     return path
 
-def get_neighbors(x, y, terrain):
-    neighbors = []
-    for i in [-1, 0, 1]:
-        for j in [-1, 0, 1]:
-            if i == 0 and j == 0:
-                continue
-            if 0 <= x + i < terrain.shape[0] and 0 <= y + j < terrain.shape[1]:
-                neighbors.append((x + i, y + j))
-    return neighbors
+
