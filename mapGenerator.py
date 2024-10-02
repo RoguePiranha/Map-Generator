@@ -1,11 +1,11 @@
 import numpy as np
-import random
 import noise
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from pathfinding import a_star
 from terrain import add_rivers, add_lakes, add_ponds, add_caves
 from utils import get_neighbors, normalize
+from placeVillages import place_villages, village_radius
 
 def create_color_map(terrain_colors):
     cmap = mcolors.ListedColormap([terrain_colors[i] for i in range(10)])
@@ -56,18 +56,6 @@ def add_cliffs_and_canyons(heightmap, terrain, config):
                 terrain[i][j] = 11  # Mark as canyon
     return terrain
 
-def place_villages(terrain, num_villages):
-    village_positions = []
-    for _ in range(num_villages):
-        while True:
-            x = random.randint(0, terrain.shape[0] - 1)
-            y = random.randint(0, terrain.shape[1] - 1)
-            if terrain[x][y] == 2:  # Only place villages on plains
-                village_positions.append((x, y))
-                terrain[x][y] = 4  # Mark village
-                break
-    return village_positions
-
 def add_roads(terrain, villages):
     for i in range(len(villages)):
         for j in range(i + 1, len(villages)):
@@ -93,21 +81,31 @@ def run_map_generation(config, terrain_colors):
         config["PERSISTENCE"], config["LACUNARITY"], config["SEED"]
     )
     heightmap = normalize(heightmap)
+    print("Heightmap generated")
 
     # Generate terrain and features
     terrain = generate_terrain(heightmap, config)
+    print("Terrain generated")
     terrain = add_rivers(heightmap, terrain, config)
+    print("Rivers added")
     terrain = add_lakes(terrain, heightmap, config)
+    print("Lakes added")
     terrain = add_ponds(terrain, config)
+    print("Ponds added")
     terrain = add_caves(terrain, heightmap, config)
+    print("Caves added")
 
     # Add cliffs and canyons
     terrain = add_cliffs_and_canyons(heightmap, terrain, config)
+    print("Cliffs and canyons added")
 
     # Place villages and roads
-    villages = place_villages(terrain, config["NUM_VILLAGES"])
+    villages = place_villages(terrain, config["NUM_VILLAGES"], village_radius(config["VILLAGE_RADIUS"]))
     terrain = add_roads(terrain, villages)
+    print("Villages and roads placed")
 
     # Visualize
     cmap, norm = create_color_map(terrain_colors)
+    print("Visualizing map...")
     visualize_map(terrain, cmap, norm)
+    print("Map generation complete.")

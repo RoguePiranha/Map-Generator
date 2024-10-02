@@ -2,8 +2,8 @@ from mapGenerator import run_map_generation
 
 # Configuration dictionary for adjustable parameters
 config = {
-    "WIDTH": 512,
-    "HEIGHT": 512,
+    "WIDTH": 1080,
+    "HEIGHT": 1920,
     "SCALE": 100.0,           # Controls how zoomed in/out the noise is
     "OCTAVES": 6,
     "PERSISTENCE": 0.5,
@@ -13,9 +13,10 @@ config = {
     "PLAINS_THRESHOLD": 0.4,
     "WATER_THRESHOLD": 0.3,
     "RIVER_THRESHOLD": 0.25,  # Minimum height for a river to start
-    "NUM_VILLAGES": 5,
+    "NUM_VILLAGES": 15,
+    "VILLAGE_RADIUS": 30,
     "POND_PROBABILITY": 0.01,  # 1% chance of placing a pond on plains or forests
-    "CAVE_PROBABILITY": 0.02,  # 2% chance of placing a cave in mountains/hills
+    "CAVE_PROBABILITY": 0.005,  # 2% chance of placing a cave in mountains/hills
     "CLIFF_THRESHOLD": 0.05    # Adjust this for steep cliffs
 }
 

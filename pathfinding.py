@@ -12,11 +12,13 @@ TERRAIN_COSTS = {
     6: 50,   # Lake (impassable or very expensive)
     7: 2,    # Pond (slightly higher cost)
     8: 1,    # Road (already established, easy to follow)
+    9: 100,  # Caves (impassable or very expensive)
+    10: 100, # Cliffs (impassable or very expensive)
+    11: 100, # Canyons (impassable or very expensive)
 }
 
 # A* pathfinding algorithm
 def a_star(start, goal, terrain):
-    """A* pathfinding algorithm."""
     def heuristic(a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])  # Manhattan distance
 
@@ -32,7 +34,17 @@ def a_star(start, goal, terrain):
             break
 
         for neighbor in get_neighbors(*current, terrain):
-            new_cost = cost_so_far[current] + TERRAIN_COSTS[terrain[neighbor[0]][neighbor[1]]]
+            # Ensure terrain values are integers and handle unexpected terrain values
+            try:
+                terrain_type = int(terrain[neighbor[0]][neighbor[1]])
+                if terrain_type not in TERRAIN_COSTS:
+                    raise ValueError(f"Unexpected terrain type: {terrain_type}")
+            except ValueError:
+                terrain_type = 100  # Assign a default cost if the terrain type is invalid
+
+            # Calculate new cost for this path
+            new_cost = cost_so_far[current] + TERRAIN_COSTS.get(terrain_type, 100)
+
             if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
                 cost_so_far[neighbor] = new_cost
                 priority = new_cost + heuristic(goal, neighbor)
@@ -50,5 +62,3 @@ def a_star(start, goal, terrain):
         path.reverse()
 
     return path
-
-
