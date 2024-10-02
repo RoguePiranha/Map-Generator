@@ -15,21 +15,24 @@ config = {
     "RIVER_THRESHOLD": 0.25,  # Minimum height for a river to start
     "NUM_VILLAGES": 5,
     "POND_PROBABILITY": 0.01,  # 1% chance of placing a pond on plains or forests
-    "CAVE_PROBABILITY": 0.02   # 2% chance of placing a cave in mountains/hills
+    "CAVE_PROBABILITY": 0.02,  # 2% chance of placing a cave in mountains/hills
+    "CLIFF_THRESHOLD": 0.05    # Adjust this for steep cliffs
 }
 
 # Custom color map for different terrain types
 terrain_colors = {
-    0: 'blue',      # Water (lakes and rivers)
-    1: 'darkgreen', # Forest
-    2: 'lightgreen',# Plains
-    3: 'brown',     # Mountains
-    4: 'yellow',    # Villages
-    5: 'blue',      # Rivers (water)
-    6: 'cyan',      # Lakes
-    7: 'lightblue', # Ponds
-    8: 'black',     # Roads
-    9: 'gray',      # Caves
+    0: 'blue',           # Water (lakes and rivers)
+    1: 'darkgreen',      # Forest
+    2: 'lightgreen',     # Plains
+    3: 'brown',          # Mountains
+    4: 'yellow',         # Villages
+    5: 'deepskyblue',    # Rivers (water)
+    6: 'cyan',           # Lakes
+    7: 'lightblue',      # Ponds
+    8: 'black',          # Roads
+    9: 'gray',           # Caves
+    10: 'saddlebrown',   # Cliffs
+    11: 'darkred'        # Canyons
 }
 
 # Run the map generation

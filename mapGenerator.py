@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from pathfinding import a_star
 from terrain import add_rivers, add_lakes, add_ponds, add_caves
-from utils import normalize
+from utils import get_neighbors, normalize
 
 def create_color_map(terrain_colors):
     cmap = mcolors.ListedColormap([terrain_colors[i] for i in range(10)])
@@ -34,6 +34,26 @@ def generate_terrain(heightmap, config):
                 terrain[i][j] = 1  # Forest
             else:
                 terrain[i][j] = 0  # Water (lake or river)
+    return terrain
+
+# Function to add cliffs and canyons
+def add_cliffs_and_canyons(heightmap, terrain, config):
+    gradient_threshold = config["CLIFF_THRESHOLD"]  # Adjust this value for steeper cliffs
+    for i in range(1, heightmap.shape[0] - 1):
+        for j in range(1, heightmap.shape[1] - 1):
+            current_height = heightmap[i][j]
+            neighbors = get_neighbors(i, j, heightmap)
+
+            # Calculate the maximum height difference between the current cell and its neighbors
+            max_height_diff = max(abs(current_height - heightmap[x, y]) for x, y in neighbors)
+            
+            # Mark as cliff if the height difference exceeds the threshold
+            if max_height_diff > gradient_threshold:
+                terrain[i][j] = 10  # Mark as cliff
+
+            # If it's a lowland area and near a river or steep side, mark it as a canyon
+            if current_height < config["WATER_THRESHOLD"] and max_height_diff > gradient_threshold:
+                terrain[i][j] = 11  # Mark as canyon
     return terrain
 
 def place_villages(terrain, num_villages):
@@ -67,8 +87,9 @@ def visualize_map(terrain, cmap, norm):
     plt.show()
 
 def run_map_generation(config, terrain_colors):
+    # Create heightmap
     heightmap = generate_heightmap(
-        config["WIDTH"], config["HEIGHT"], config["SCALE"], config["OCTAVES"],
+        config["WIDTH"], config["HEIGHT"], config["SCALE"], config["OCTAVES"], 
         config["PERSISTENCE"], config["LACUNARITY"], config["SEED"]
     )
     heightmap = normalize(heightmap)
@@ -79,6 +100,9 @@ def run_map_generation(config, terrain_colors):
     terrain = add_lakes(terrain, heightmap, config)
     terrain = add_ponds(terrain, config)
     terrain = add_caves(terrain, heightmap, config)
+
+    # Add cliffs and canyons
+    terrain = add_cliffs_and_canyons(heightmap, terrain, config)
 
     # Place villages and roads
     villages = place_villages(terrain, config["NUM_VILLAGES"])
