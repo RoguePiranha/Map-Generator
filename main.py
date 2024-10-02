@@ -4,20 +4,20 @@ from mapGenerator import run_map_generation
 config = {
     "WIDTH": 1080,
     "HEIGHT": 1920,
-    "SCALE": 100.0,           # Controls how zoomed in/out the noise is
+    "SCALE": 100.0,             # Controls how zoomed in/out the noise is
     "OCTAVES": 6,
     "PERSISTENCE": 0.5,
     "LACUNARITY": 2.0,
-    "SEED": 42,               # Ensures reproducibility
+    "SEED": 42,                 # Ensures reproducibility
     "MOUNTAIN_THRESHOLD": 0.6,
     "PLAINS_THRESHOLD": 0.4,
     "WATER_THRESHOLD": 0.3,
-    "RIVER_THRESHOLD": 0.25,  # Minimum height for a river to start
+    "RIVER_THRESHOLD": 0.25,    # Minimum height for a river to start
     "NUM_VILLAGES": 15,
     "VILLAGE_RADIUS": 30,
-    "POND_PROBABILITY": 0.01,  # 1% chance of placing a pond on plains or forests
+    "POND_PROBABILITY": 0.01,   # 1% chance of placing a pond on plains or forests
     "CAVE_PROBABILITY": 0.005,  # 2% chance of placing a cave in mountains/hills
-    "CLIFF_THRESHOLD": 0.05    # Adjust this for steep cliffs
+    "CLIFF_THRESHOLD": 0.05     # Adjust this for steep cliffs
 }
 
 # Custom color map for different terrain types
