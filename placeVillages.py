@@ -2,15 +2,6 @@ import random
 
 
 def place_villages(terrain, num_villages, village_radius=3):
-    """
-    Place villages on the map with a specified radius to make them larger.
-    Marks a region around the village center as a village.
-
-    :param terrain: The terrain grid.
-    :param num_villages: Number of villages to place.
-    :param village_radius: Radius of the village (default is 3).
-    :return: List of village center coordinates.
-    """
     village_positions = []
 
     for _ in range(num_villages):
@@ -21,6 +12,8 @@ def place_villages(terrain, num_villages, village_radius=3):
             # Ensure we only place villages on plains (value = 2)
             if terrain[x][y] == 2:
                 village_positions.append((x, y))
+
+                village_radius = village_radius_randomizer(village_radius)
 
                 # Mark the area around the village center as part of the village
                 for i in range(-village_radius, village_radius + 1):
@@ -35,13 +28,13 @@ def place_villages(terrain, num_villages, village_radius=3):
     return village_positions
 
 
-def village_radius(village_radius):
+def village_radius_randomizer(village_radius):
     """
     Set the radius of the village.
 
     :param village_radius: Radius of the village.
     """
     # set village radius to be a value of between the village radius and 10 above or below
-    village_radius = random.randint(village_radius - 10, village_radius + 10)
+    village_radius = random.randint(village_radius - 5, village_radius + 10)
 
     return village_radius

@@ -16,4 +16,9 @@ def normalize(array):
     """Normalize an array to range 0-1."""
     min_val = np.min(array)
     max_val = np.max(array)
+
+    # prevent division by zero
+    if max_val == min_val:
+        return np.zeros_like(array)
+
     return (array - min_val) / (max_val - min_val)

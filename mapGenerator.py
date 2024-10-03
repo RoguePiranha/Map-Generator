@@ -2,17 +2,18 @@ import numpy as np
 import noise
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
 from pathfinding import a_star
 from terrain import add_rivers, add_lakes, add_ponds, add_caves
 from utils import get_neighbors, normalize
-from placeVillages import place_villages, village_radius
+from placeVillages import place_villages
+from scipy.ndimage import gaussian_filter
+from color_map import create_gradient_color_map
 
 
-def create_color_map(terrain_colors):
-    cmap = mcolors.ListedColormap([terrain_colors[i] for i in range(10)])
-    bounds = list(range(11))  # Boundaries between colors
-    norm = mcolors.BoundaryNorm(bounds, cmap.N)
-    return cmap, norm
+def smooth_heightmap(heightmap, sigma=1):
+    """Apply Gaussian smoothing to the heightmap."""
+    return gaussian_filter(heightmap, sigma=sigma)
 
 
 def generate_heightmap(width, height, scale, octaves, persistence, lacunarity, seed):
@@ -31,7 +32,38 @@ def generate_heightmap(width, height, scale, octaves, persistence, lacunarity, s
                 repeaty=1024,
                 base=seed,
             )
+
+    # Apply Gaussian smoothing
+    heightmap = smooth_heightmap(heightmap, sigma=2)
     return heightmap
+
+
+def visualize_map_with_features(heightmap, terrain, cmap, terrain_colors):
+    """Visualize the map with the gradient color map for heightmap and overlay discrete terrain features."""
+    plt.figure(figsize=(10, 10))
+
+    # Show the heightmap with gradient color map
+    plt.imshow(heightmap, cmap=cmap)
+
+    # Overlay discrete terrain features (like roads, rivers, villages, etc.)
+    for i in range(terrain.shape[0]):
+        for j in range(terrain.shape[1]):
+            if terrain[i][j] in terrain_colors:
+                plt.scatter(j, i, color=terrain_colors[terrain[i][j]], s=1)
+
+    # Add contour lines
+    plt.contour(heightmap, levels=10, colors="black", linewidths=0.5)
+
+    # Create a legend for the discrete features
+    legend_patches = [
+        mpatches.Patch(color=color, label=label)
+        for label, color in terrain_colors.items()
+    ]
+    plt.legend(handles=legend_patches, loc="upper right", fontsize="small")
+
+    plt.colorbar()
+    plt.title("Generated Terrain Map with Features Overlay")
+    plt.show()
 
 
 def generate_terrain(heightmap, config):
@@ -89,14 +121,6 @@ def add_roads(terrain, villages):
     return terrain
 
 
-def visualize_map(terrain, cmap, norm):
-    plt.figure(figsize=(10, 10))
-    plt.imshow(terrain, cmap=cmap, norm=norm)
-    plt.colorbar()
-    plt.title("Generated Terrain Map with Custom Colors")
-    plt.show()
-
-
 def run_map_generation(config, terrain_colors):
     # Create heightmap
     heightmap = generate_heightmap(
@@ -109,7 +133,7 @@ def run_map_generation(config, terrain_colors):
         config["SEED"],
     )
     heightmap = normalize(heightmap)
-    print("Heightmap generated")
+    print("Heightmap generated and normalized")
 
     # Generate terrain and features
     terrain = generate_terrain(heightmap, config)
@@ -128,14 +152,13 @@ def run_map_generation(config, terrain_colors):
     print("Cliffs and canyons added")
 
     # Place villages and roads
-    villages = place_villages(
-        terrain, config["NUM_VILLAGES"], village_radius(config["VILLAGE_RADIUS"])
-    )
+    villages = place_villages(terrain, config["NUM_VILLAGES"], config["VILLAGE_RADIUS"])
     terrain = add_roads(terrain, villages)
     print("Villages and roads placed")
 
     # Visualize
-    cmap, norm = create_color_map(terrain_colors)
-    print("Visualizing map...")
-    visualize_map(terrain, cmap, norm)
-    print("Map generation complete.")
+    cmap = create_gradient_color_map()
+    # norm = mcolors.Normalize(vmin=0, vmax=1)  # Normalizing for smooth gradients
+    print("Map Being Visualized Externally...")
+    visualize_map_with_features(heightmap, terrain, cmap, terrain_colors)
+    print("Map closed. Thank you for using the map generator!")

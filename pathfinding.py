@@ -3,18 +3,18 @@ from utils import get_neighbors
 
 # Define movement costs for different terrains
 TERRAIN_COSTS = {
-    0: 100,  # Water (impassable or very expensive)
-    1: 3,  # Forest (medium difficulty)
-    2: 1,  # Plains (easy to travel)
-    3: 100,  # Mountain (impassable or very expensive)
-    4: 1,  # Village (destination)
-    5: 1,  # River (can be crossed, but slightly more costly)
-    6: 50,  # Lake (impassable or very expensive)
-    7: 2,  # Pond (slightly higher cost)
-    8: 1,  # Road (already established, easy to follow)
-    9: 100,  # Caves (impassable or very expensive)
-    10: 100,  # Cliffs (impassable or very expensive)
-    11: 100,  # Canyons (impassable or very expensive)
+    0: 1000,    # Water (impassable or very expensive)
+    1: 3,       # Forest (medium difficulty)
+    2: 1,       # Plains (easy to travel)
+    3: 100,     # Mountain (impassable or very expensive)
+    4: 1,       # Village (destination)
+    5: 1,       # River (can be crossed, but slightly more costly)
+    6: 100,     # Lake (impassable or very expensive)
+    7: 20,      # Pond (slightly higher cost)
+    8: 1,       # Road (already established, easy to follow)
+    9: 1000,    # Caves (impassable or very expensive)
+    10: 1000,   # Cliffs (impassable or very expensive)
+    11: 1000,   # Canyons (impassable or very expensive)
 }
 
 
