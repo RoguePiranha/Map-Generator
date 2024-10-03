@@ -159,6 +159,6 @@ def run_map_generation(config, terrain_colors):
     # Visualize
     cmap = create_gradient_color_map()
     # norm = mcolors.Normalize(vmin=0, vmax=1)  # Normalizing for smooth gradients
-    print("Map Being Visualized Externally...")
+    print("Visualizing Map Externally...")
     visualize_map_with_features(heightmap, terrain, cmap, terrain_colors)
-    print("Map closed. Thank you for using the map generator!")
+    print("Map closed. Thank you for using the Map Generator!")
