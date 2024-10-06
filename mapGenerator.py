@@ -45,19 +45,39 @@ def visualize_map_with_features(heightmap, terrain, cmap, terrain_colors):
     # Show the heightmap with gradient color map
     plt.imshow(heightmap, cmap=cmap)
 
+    # Create a copy of the terrain for feature overlay
+    overlay = np.zeros_like(terrain)
+
     # Overlay discrete terrain features (like roads, rivers, villages, etc.)
     for i in range(terrain.shape[0]):
         for j in range(terrain.shape[1]):
             if terrain[i][j] in terrain_colors:
-                plt.scatter(j, i, color=terrain_colors[terrain[i][j]], s=1)
+                overlay[i][j] = terrain[i][j]  # Mark discrete feature in the overlay grid
 
-    # Add contour lines
+    # Show the overlay using terrain_colors
+    cmap_overlay = mcolors.ListedColormap([terrain_colors[i] for i in range(len(terrain_colors))])
+    plt.imshow(overlay, cmap=cmap_overlay, alpha=0.6)  # Overlay with some transparency
+
+    # Add contour lines for the heightmap
     plt.contour(heightmap, levels=10, colors="black", linewidths=0.5)
 
-    # Create a legend for the discrete features
+    # Create a legend for the discrete features with labels
+    legend_labels = {
+        0: 'Water',
+        1: 'Forest',
+        2: 'Plains',
+        3: 'Mountains',
+        4: 'Villages',
+        5: 'Rivers',
+        6: 'Lakes',
+        7: 'Ponds',
+        8: 'Roads',
+        9: 'Caves',
+    }
+
     legend_patches = [
-        mpatches.Patch(color=color, label=label)
-        for label, color in terrain_colors.items()
+        mpatches.Patch(color=terrain_colors[i], label=legend_labels[i])
+        for i in legend_labels
     ]
     plt.legend(handles=legend_patches, loc="upper right", fontsize="small")
 
@@ -78,34 +98,6 @@ def generate_terrain(heightmap, config):
                 terrain[i][j] = 1  # Forest
             else:
                 terrain[i][j] = 0  # Water (lake or river)
-    return terrain
-
-
-# Function to add cliffs and canyons
-def add_cliffs_and_canyons(heightmap, terrain, config):
-    gradient_threshold = config[
-        "CLIFF_THRESHOLD"
-    ]  # Adjust this value for steeper cliffs
-    for i in range(1, heightmap.shape[0] - 1):
-        for j in range(1, heightmap.shape[1] - 1):
-            current_height = heightmap[i][j]
-            neighbors = get_neighbors(i, j, heightmap)
-
-            # Calculate the maximum height difference between the current cell and its neighbors
-            max_height_diff = max(
-                abs(current_height - heightmap[x, y]) for x, y in neighbors
-            )
-
-            # Mark as cliff if the height difference exceeds the threshold
-            if max_height_diff > gradient_threshold:
-                terrain[i][j] = 10  # Mark as cliff
-
-            # If it's a lowland area and near a river or steep side, mark it as a canyon
-            if (
-                current_height < config["WATER_THRESHOLD"]
-                and max_height_diff > gradient_threshold
-            ):
-                terrain[i][j] = 11  # Mark as canyon
     return terrain
 
 
@@ -146,10 +138,6 @@ def run_map_generation(config, terrain_colors):
     print("Ponds added")
     terrain = add_caves(terrain, heightmap, config)
     print("Caves added")
-
-    # Add cliffs and canyons
-    terrain = add_cliffs_and_canyons(heightmap, terrain, config)
-    print("Cliffs and canyons added")
 
     # Place villages and roads
     villages = place_villages(terrain, config["NUM_VILLAGES"], config["VILLAGE_RADIUS"])

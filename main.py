@@ -11,12 +11,12 @@ config = {
     "SEED": 42,                 # Ensures reproducibility
     "MOUNTAIN_THRESHOLD": 0.6,
     "PLAINS_THRESHOLD": 0.4,
-    "WATER_THRESHOLD": 0.3,
+    "WATER_THRESHOLD": 0.37,
     "RIVER_THRESHOLD": 0.25,    # Minimum height for a river to start
-    "NUM_VILLAGES": 15,
-    "VILLAGE_RADIUS": 10,
-    "POND_PROBABILITY": 0.0001,   # % chance of placing a pond on plains or forests
-    "CAVE_PROBABILITY": 0.0005,  # % chance of placing a cave in mountains/hills
+    "NUM_VILLAGES": 10,
+    "VILLAGE_RADIUS": 10,       # Sets average size of villages
+    "POND_PROBABILITY": 0.0001, # % chance of placing a pond on plains or forests
+    "CAVE_PROBABILITY": 0.0005, # % chance of placing a cave in mountains/hills
     "CLIFF_THRESHOLD": 0.05     # Adjust this for steep cliffs
 }
 
@@ -31,8 +31,6 @@ terrain_colors = {
     7: 'lightblue',      # Ponds
     8: 'black',          # Roads
     9: 'gray',           # Caves
-    10: 'saddlebrown',   # Cliffs
-    11: 'darkred'        # Canyons
 }
 
 
