@@ -84,10 +84,10 @@ config = {
     # Feature-specific settings
     "RIVER_THRESHOLD": 0.25,   # Minimum height for river start
     "NUM_VILLAGES": 15,         # Number of villages to place
+    "VILLAGE_RADIUS": 10        # Radius for village size
     "POND_PROBABILITY": 0.01,  # Probability of placing a pond
     "CAVE_PROBABILITY": 0.02,  # Probability of placing a cave
     "CLIFF_THRESHOLD": 0.05,   # Steepness required for cliffs
-    "VILLAGE_RADIUS": 15        # Radius for village size
 }
 ```
 
