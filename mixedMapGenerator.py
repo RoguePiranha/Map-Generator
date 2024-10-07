@@ -70,8 +70,8 @@ import torch
 #########################################################################################
 
 config = {
-    "WIDTH": 512,                # Width of the map
-    "HEIGHT": 512,               # Height of the map
+    "WIDTH": 513,                # Width of the map
+    "HEIGHT": 513,               # Height of the map
     "SCALE": 100.0,              # Scale of the Perlin noise
     "OCTAVES": 6,                # Number of octaves for Perlin noise
     "PERSISTENCE": 0.5,          # Persistence for Perlin noise
@@ -339,16 +339,20 @@ def normalize(array):
 
 def generate_perlin_noise(width, height, scale, octaves, persistence, lacunarity, seed):
     """Generate base heightmap using Perlin noise."""
-    grid_x, grid_y = torch.meshgrid(
-        torch.arange(0, width, device='cuda') / scale,
-        torch.arange(0, height, device='cuda') / scale
-    )
+    # Initialize heightmap tensor on GPU
     heightmap = torch.zeros((width, height), device='cuda')
-    for octave in range(octaves):
-        heightmap += (persistence ** octave) * torch.tensor([
-            [noise.pnoise2(x.item(), y.item(), octaves=octave, persistence=persistence, lacunarity=lacunarity, base=seed) 
-            for y in grid_y] for x in grid_x], device='cuda')
-    torch.cuda.empty_cache()
+
+    # Loop through each position in the heightmap
+    for i in tqdm(range(width), desc="Generating Perlin Noise", unit="rows"):
+        for j in range(height):
+            x = i / scale
+            y = j / scale
+            noise_value = noise.pnoise2(
+                x, y, octaves=octaves, persistence=persistence,
+                lacunarity=lacunarity, repeatx=1024, repeaty=1024, base=seed
+            )
+            heightmap[i][j] = noise_value
+
     return normalize(heightmap)
 
 
