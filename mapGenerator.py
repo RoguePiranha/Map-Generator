@@ -130,14 +130,14 @@ def run_map_generation(config, terrain_colors):
     # Generate terrain and features
     terrain = generate_terrain(heightmap, config)
     print("Terrain generated")
-    terrain = add_rivers(heightmap, terrain, config)
-    print("Rivers added")
-    terrain = add_lakes(terrain, heightmap, config)
-    print("Lakes added")
-    terrain = add_ponds(terrain, config)
-    print("Ponds added")
-    terrain = add_caves(terrain, heightmap, config)
-    print("Caves added")
+    # terrain = add_rivers(heightmap, terrain, config)
+    # print("Rivers added")
+    # terrain = add_lakes(terrain, heightmap, config)
+    # print("Lakes added")
+    # terrain = add_ponds(terrain, config)
+    # print("Ponds added")
+    # terrain = add_caves(terrain, heightmap, config)
+    # print("Caves added")
 
     # Place villages and roads
     villages = place_villages(terrain, config["NUM_VILLAGES"], config["VILLAGE_RADIUS"])

@@ -26,8 +26,6 @@ def place_villages(terrain, num_villages, village_radius=3):
 
 def village_radius_randomizer(village_radius):
     """Randomize village radius."""
-    # max_radius = village_radius * 1.5
-    # min_radius = village_radius * 0.5
     return random.randint(village_radius // 2, village_radius * 2)
 
 

@@ -3,7 +3,7 @@ from utils import get_neighbors
 
 # Define movement costs for different terrains
 TERRAIN_COSTS = {
-    0: 100000,    # Water (impassable or very expensive)
+    0: 100000000000000,    # Water (impassable or very expensive)
     1: 3,       # Forest (medium difficulty)
     2: 1,       # Plains (easy to travel)
     3: 100,     # Mountain (impassable or very expensive)
