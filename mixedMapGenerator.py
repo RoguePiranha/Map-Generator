@@ -22,8 +22,6 @@ import matplotlib.patches as mpatches
 from scipy.ndimage import gaussian_filter
 import heapq
 
-from placeVillages import expand_village_organically
-
 from tqdm import tqdm
 import torch
 
