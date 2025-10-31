@@ -27,7 +27,7 @@ import torch
 
 
 #########################################################################################
-#                                    INDEX                                              #
+#                                    INDEX                                              
 #
 #   1. Configuration
 #       ├── Config
@@ -48,11 +48,11 @@ import torch
 #       └── Normalize
 #
 #   6. Map Generator
-#      ├── Generate Perlin Noise
-#      ├── Diamond Square
-#      ├── Apply Erosion
-#      ├── Generate Heightmap
-#      └── Generate Terrain and Features
+#       ├── Generate Perlin Noise
+#       ├── Diamond Square
+#       ├── Apply Erosion
+#       ├── Generate Heightmap
+#       └── Generate Terrain and Features
 #
 #   7. Visualize Map with Features
 #   8. Run Map Generation
