@@ -4,15 +4,21 @@ from mapGenerator import run_map_generation
 config = {
     "WIDTH": 2048,
     "HEIGHT": 2048,
-    "SCALE": 200.0,             # Larger scales produce larger features (broad, slowly changing terrain)
-    "OCTAVES": 6,
-    "PERSISTENCE": 0.5,
+    "SCALE": 500.0,             # Larger scales produce larger, smoother features
+    "OCTAVES": 4,               # Fewer octaves = less high-frequency noise
+    "PERSISTENCE": 0.35,        # Lower = smoother transitions between octaves
     "LACUNARITY": 2.0,
+    "SMOOTHING_SIGMA": 6,       # Gaussian smoothing radius for the heightmap
     "SEED": 42,                 # Ensures reproducibility
-    "MOUNTAIN_THRESHOLD": 0.6,
-    "PLAINS_THRESHOLD": 0.4,
-    "WATER_THRESHOLD": 0.37,
-    "RIVER_THRESHOLD": 0.25,    # Minimum height for a river to start
+    "MOUNTAIN_THRESHOLD": 0.72,
+    "PLAINS_THRESHOLD": 0.45,
+    "WATER_THRESHOLD": 0.28,
+    "RIVER_THRESHOLD": 0.55,     # Minimum height for a river spring (high foothills)
+    "RIVER_WIDTH": 5,           # Half-width of rivers at mouth in pixels
+    "NUM_RIVERS": 12,           # Number of rivers to generate
+    "ROAD_WIDTH": 2,            # Half-width of roads in pixels
+    "ROAD_MAX_DISTANCE": 1200,  # Max distance for optional extra road links
+    "ROAD_EXTRA_CONNECTIONS": 0,# Extra links beyond the minimum spanning network
     "NUM_VILLAGES": 10,
     "VILLAGE_RADIUS": 10,       # Sets average size of villages
     "POND_PROBABILITY": 0.0001, # % chance of placing a pond on plains or forests
